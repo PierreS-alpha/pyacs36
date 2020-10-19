@@ -62,7 +62,8 @@ class Conf:
                         else:
                             if not 'all' in list(self.rename.keys()):self.rename['all']=[]
                             self.rename['all'].append((code_orig,code_new))
-                                                    
+
+                    # reject_ref
                     if (lline[0] == 'reject_ref'):
                         code=lline[1]
                         component=lline[2]

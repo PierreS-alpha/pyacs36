@@ -502,6 +502,31 @@ for sinex_name in lsinex:
 
     ###########################################################################
     # COORDINATES UNCERTAINTIES
+    # change by JMN 01/10/2020
+    # if a site has been renamed from a rename command in a conf file
+    # then use the old name to get the COV since Paul Rebischung's routine
+    # has read the original code
+
+    H_rename = {}
+
+    for code, soln in list(free_sinex.estimates.keys()):
+        H_rename[code] = code
+
+    if conf.rename is not None:
+
+        # Case for a CODE rename applying for all SINEX files
+        if 'all' in conf.rename:
+
+            for (ccode, new_code) in conf.rename['all']:
+                H_rename[ccode] = new_code
+
+        # Case for a CODE rename applying for the current SINEX
+
+        if free_sinex.name in list(conf.rename.keys()):
+
+            for (ccode, new_code) in conf.rename[free_sinex.name]:
+                H_rename[ccode] = new_code
+
     ###########################################################################
 
     if ( H_COV is None ) and ( args.uncertainty ) and ( type_sol in ['snx','glx'] ):
@@ -523,7 +548,7 @@ for sinex_name in lsinex:
         
         # fills lcode, lpt and lsoln
         for sta in wsnx.sta:
-            lcode.append(sta.code)
+            lcode.append( H_rename[sta.code] )
             lpt.append(sta.pt)
             lsoln.append(sta.soln)
 
@@ -567,7 +592,7 @@ for sinex_name in lsinex:
 
         #  uncertainties            
         if H_COV is not None:
-            
+
             COV = H_COV[code]
             (corr, sigma) = pyacs.lib.glinalg.cov_to_corr(COV)
             (Sx, Sy, Sz) = sigma.flatten()
