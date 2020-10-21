@@ -16,7 +16,7 @@ def plot(self,\
          save=None,\
          show=True,\
          unit='mm',\
-         date_unit='decyear', \
+         date_unit='cal', \
          date_ref=0.0, center=True,\
          superimposed=None, \
          lcolor=['r','g','c','m','y','k','b'], \

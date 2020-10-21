@@ -7,3 +7,7 @@ pyshp
 pyaml
 ansicolors
 pyshp>=2.0.1
+contextily
+geopandas
+cartopy
+descartes
